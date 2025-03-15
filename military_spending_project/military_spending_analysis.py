@@ -11,7 +11,7 @@ russian_border_countries = [
     "LVA",  # Latvia
     "LTU",  # Lithuania
     "BLR",  # Belarus
-    "UKR",  # Ukraine
+    "UKRRrrrrrrrr",  # Ukraine
     "GEO",  # Georgia
     "AZE",  # Azerbaijan
     "KAZ",  # Kazakhstan
@@ -25,12 +25,14 @@ military_funding_list = []
 
 # Loop through each country
 for country_code in russian_border_countries:
+    # print(f"Calling API for country_code: {country_code}")
     # API URL for each country
     url = f"http://api.worldbank.org/v2/country/{country_code}/indicator/MS.MIL.XPND.GD.ZS?format=json"
     
     # Make the request
     response = requests.get(url)
     data = response.json()
+
     
     # Check if data exists and has the expected structure
     if len(data) > 1 and data[1]:  # API returns a list, and relevant data is in data[1]
@@ -42,6 +44,8 @@ for country_code in russian_border_countries:
             # Only append data from 2010 onwards
             if year >= 2010:
                 military_funding_list.append({"Country": country, "Year": year, "Expenditure": expenditure})
+    else:
+        print(f"Country code {country_code} has not data")
 
 # Convert to Pandas DataFrame
 df = pd.DataFrame(military_funding_list)
